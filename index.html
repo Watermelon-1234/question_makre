@@ -102,7 +102,7 @@
 	//var maxLevel = 99999;
 	var wrongAnswers = 0;
 	var maxWrongAnswers = 3;
-	var my_prompt="請輸出一個可以確切選出肯定答案而不是主觀看法的四選一選擇題問題，如果難度的下限和上限分別是1和99999、而且200以上的難度就是專家難度，那請輸出難度為"+(currentLevel)+"且問題及答案都是相當確切的的選擇題，四個選項在最後輸出。 選項的內容必須是和問題有關。每個選項開頭都用㏎當作記號(題目不用)，如果那一個選項是正確答案在開頭的就改成㎡，但是答案是第幾個選項得是隨機的。並用㏄為詳解的開始符號，最後要說和哪些領域相關，還有難度。以上所提到每一個輸出的項目之間都要換行 並在最後輸出一個㊣做為結束符號。";
+	var my_prompt="請輸出一個可以確切選出肯定只有一個答案而且各個選項內容,不同題目也不是主觀看法的四選一選擇題問題，而且答案只有一個，如果難度的下限和上限分別是1和99999、而且5以下是普遍國小學生能輕鬆解答的題目、200以上的難度就是專家難度，那請輸出難度為"+(currentLevel)+"且問題及答案都是相當確切的的選擇題，一開始一定要有一個內容完整表達的問題，四個選項在最後輸出。 選項的內容必須是和問題有關，但不能相同,不能有兩個一樣的選項。每個選項開頭都用㏎當作記號(題目不用)，如果那一個選項是正確答案在開頭的就改成㎡，但是答案是第幾個選項得是隨機的。並用㏄為詳解的開始符號，最後要說和哪些領域相關，還有難度。題目要有以上特性:有明確的正確答案、測試知識面廣、內容要是已經被許多人證實正確的內容、題目沒有歧義。以上所提到每一個輸出的項目之間都要換行 並在最後輸出一個㊣做為結束符號。";
 	//var form=document.createElement("label");
 	var form;
 	function fade()
@@ -123,7 +123,7 @@
 		document.getElementById("wrongHeader").innerHTML=wrongAnswers+"/3";
 
 		// 进入下一题
-		if(currentLevel>1&&form)
+		if(currentLevel>1)
 		{
 			console.log("deleting...");
 			form = document.getElementsByTagName("form")[0]; // 获取第一个form元素
@@ -136,7 +136,7 @@
 			type: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": "Bearer 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"
+				"Authorization": "Bearer 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"
 			},
 			data: JSON.stringify({
 				"model": "text-davinci-003",
@@ -179,6 +179,10 @@
 					correctOptionIndex = i - 1;
 					let option = lines[i].substring(1).trim(); // 去除空格
 					options.push(option);
+				  }
+				  if (lines[i].startsWith("㏄")) {
+					analysis=lines[i].substring(1).trim(); // 去除空格
+					
 				  }
 				}
 				console.log(lines);
