@@ -99,7 +99,7 @@
 				type: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					"Authorization": "Bearer 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"
+					"Authorization": "Bearer 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"
 				},
 				data: JSON.stringify({
 					"model": "text-davinci-003",
@@ -120,21 +120,21 @@
 					let options = [];
 					let correctOptionIndex = -1;
 					for (let i = 0; i < lines.length; i++) {
-					// 获取选项
-					if (i < analysisIndex && lines[i].startsWith("㏎")) {
-						let option = lines[i].substring(1).trim(); // 去除空格
-						options.push(option);
-					}
-					// 获取正确选项
-					if (lines[i].startsWith("㎡") && correctOptionIndex === -1) {
-						correctOptionIndex = i - 1;
-						let option = lines[i].substring(1).trim(); // 去除空格
-						options.push(option);
-					}
-					if (lines[i].startsWith("㏄")) {
-						analysis=lines[i].substring(1).trim(); // 去除空格
-						
-					}
+						// 获取选项
+						if (i < analysisIndex && lines[i].startsWith("㏎")) {
+							let option = lines[i].substring(1).trim(); // 去除空格
+							options.push(option);
+						}
+						// 获取正确选项
+						if (lines[i].startsWith("㎡") && correctOptionIndex == -1) {
+							correctOptionIndex = i - 1;
+							let option = lines[i].substring(1).trim(); // 去除空格
+							options.push(option);
+						}
+						if (lines[i].startsWith("㏄")) {
+							analysis=lines[i].substring(1).trim(); // 去除空格
+							
+						}
 					}
 
 					// 檢查options中是否有重複的元素，如果有，重新發送post請求並重新處理字串
@@ -212,7 +212,9 @@
 							wrongAnswers++;
 							if(maxWrongAnswers==wrongAnswers)
 							{
-								//失敗
+								let youfail="失敗了喔 最佳成績是"+currentLevel+"點擊確定重新開始!";
+								alert(youfail);
+								window.location.reload();
 							}
 							else
 							{
