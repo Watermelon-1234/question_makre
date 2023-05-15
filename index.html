@@ -65,13 +65,55 @@
 	</div>
 </body>
 <!-- jQuery Plugin -->
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+<script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js'></script>
+<script type="module" src='https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js'></script>
+<script type="module" src='https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js'></script>
+<script type="module" src='https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js'></script>
+
+<script type="module">//firebase
+	import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js'
+	// https://firebase.google.com/docs/web/setup#available-libraries
+ 	
+	// Your web app's Firebase configuration
+	const firebaseConfig = {
+	  apiKey: "AIzaSyAYtIeZWT_M_X6_IeCHTT17CgLctAhcy8s",
+	  authDomain: "answer-to-die.firebaseapp.com",
+	  projectId: "answer-to-die",
+	  storageBucket: "answer-to-die.appspot.com",
+	  messagingSenderId: "673916292338",
+	  appId: "1:673916292338:web:cc3948b7c97c902faa146b"
+	};
+	
+	// Initialize Firebase
+	var firebase=initializeApp(firebaseConfig);
+
+
+
+
+	//var ref = db.ref('/api/openAI/key');
+	import { getDatabase, ref, child, get } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
+
+	const dbRef = ref(getDatabase());
+	get(child(dbRef, `users/${userId}`)).then((snapshot) => {
+	if (snapshot.exists()) {
+		console.log(snapshot.val());
+	} else {
+		console.log("No data available");
+	}
+	}).catch((error) => {
+	console.error(error);
+	});
+	// 檢索該路徑下的值
+	/*firebase.database.ref('/api/openAI/key').once('value').then(function(snapshot) {
+		var data = snapshot.val();
+		// 使用資料做一些事情
+		console.log(data);
+	});*/
+  </script>
+  
 <script>
 	
-</script>
-<script>
-	require('dotenv').config();
-// 變數定義
+	// 變數定義
 	var currentLevel = 1;
 	//var maxLevel = 99999;
 	var wrongAnswers = 0;
@@ -100,7 +142,7 @@
 				type: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					"Authorization": "Bearer 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"
+					"Authorization": "Bearer "+aikey
 				},
 				data: JSON.stringify({
 					"model": "text-davinci-003",
@@ -197,8 +239,8 @@
 
 						// 如果沒有選中任何選項，提示用戶至少選擇一個選項
 						if (!checkedOption) {
-						alert("請至少選擇一個選項！");
-						return;
+							alert("請至少選擇一個選項！");
+							return;
 						}
 
 						// 如果選中了正確的答案，提示用戶恭喜你答對了！否則提示用戶很抱歉答錯了！並顯示正確答案是什麼。
@@ -242,7 +284,7 @@
 			});
 		}
 	// request Q
-	$(document).ready(nextQuestion());
+	//$(document).ready(nextQuestion());
 	function nextQuestion() {
 		replacePrompt();
 		loading();
