@@ -5,51 +5,23 @@
 	<title>answer to die</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<style>
-		
-		#preloader {/*   這是整個會蓋住畫面的底色色塊  */
-		  position: fixed;
-		  width: 100%;
-		  height: 100%;
-		  left: 0%;
-		  top: 0%;
-		  background-color: #fff;
-		  z-index: 9999;
-		}
-		#status {/*   這是中間loading的gif坐標css,我們盡量讓他畫面置中  */
-		  position: fixed;
-		  width: 218px;
-		  height: 419px;
-		  margin-left: -140px;
-		  margin-top: -160px;
-		  left: 50%;
-		  top: 50%;
-		}
-		#preloader {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			z-index: 9999;
-			background-color: #fff;
-		}
-
-		#status {
-			width: 200px;
-			height: 200px;
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			background-image: url('https://media.tenor.com/wpSo-8CrXqUAAAAj/loading-loading-forever.gif');
-			background-repeat: no-repeat;
-			background-position: center;
-			margin: -100px 0 0 -100px;
-		}
-	</style>
+	<!-- jQuery Plugin -->
+	<script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js'></script>
+	<!-- firebased api -->
+	<script type="module" src='https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js'></script>
+	<script type="module" src='https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js'></script>
+	<script type="module" src='https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js'></script>
 	<link rel="icon" type="image/png" href="00018-3533087918.png">
 </head>
+
+
 <body>
+	<script type="module" src="main.js"></script>
+	<script>//for start
+		// request Q
+		
+
+	</script>
 	<div class="container">
 		<h1>OpenAI 問答遊戲</h1>
 		<h2>關卡： <h2 id="level">1</h2></h2>
@@ -64,24 +36,22 @@
 	  <h1>loading</h1>
 	</div>
 </body>
-<!-- jQuery Plugin -->
-<script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js'></script>
-<script type="module" src='https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js'></script>
-<script type="module" src='https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js'></script>
-<script type="module" src='https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js'></script>
+
 
 <script type="module">//firebase
+	/*var aikey;//為了api key做準備
 	import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js'
 	// https://firebase.google.com/docs/web/setup#available-libraries
  	
 	// Your web app's Firebase configuration
 	const firebaseConfig = {
-	  apiKey: "AIzaSyAYtIeZWT_M_X6_IeCHTT17CgLctAhcy8s",
-	  authDomain: "answer-to-die.firebaseapp.com",
-	  projectId: "answer-to-die",
-	  storageBucket: "answer-to-die.appspot.com",
-	  messagingSenderId: "673916292338",
-	  appId: "1:673916292338:web:cc3948b7c97c902faa146b"
+	  	apiKey: "AIzaSyAYtIeZWT_M_X6_IeCHTT17CgLctAhcy8s",
+		authDomain: "answer-to-die.firebaseapp.com",
+		databaseURL: "https://answer-to-die-default-rtdb.asia-southeast1.firebasedatabase.app",
+		projectId: "answer-to-die",
+		storageBucket: "answer-to-die.appspot.com",
+		messagingSenderId: "673916292338",
+		appId: "1:673916292338:web:cc3948b7c97c902faa146b"
 	};
 	
 	// Initialize Firebase
@@ -94,14 +64,14 @@
 	import { getDatabase, ref, child, get } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
 
 	const dbRef = ref(getDatabase());
-	get(child(dbRef, `users/${userId}`)).then((snapshot) => {
+	get(child(dbRef,'/api/openAI/key')).then((snapshot) => {
 	if (snapshot.exists()) {
-		console.log(snapshot.val());
+		aikey = snapshot.val();
 	} else {
-		console.log("No data available");
+		console.log("firebase:No data available");
 	}
 	}).catch((error) => {
-	console.error(error);
+	console.error("firebase error:"+error);
 	});
 	// 檢索該路徑下的值
 	/*firebase.database.ref('/api/openAI/key').once('value').then(function(snapshot) {
@@ -109,10 +79,10 @@
 		// 使用資料做一些事情
 		console.log(data);
 	});*/
-  </script>
+</script>
   
 <script>
-	
+	/*
 	// 變數定義
 	var currentLevel = 1;
 	//var maxLevel = 99999;
@@ -181,7 +151,7 @@
 					}
 
 					// 檢查options中是否有重複的元素，如果有，重新發送post請求並重新處理字串
-					if (new Set(options).size !== options.length /* || lines.length!==4 || analysis==NULL*/) {
+					if (new Set(options).size !== options.length /* || lines.length!==4 || analysis==NULL) {
 						console.log("options中有重複的元素，重新發送post請求並重新處理字串");
 						post_and_show();
 					}
@@ -198,7 +168,7 @@
 
 						console.log("题目选项：" + options.join(", "));
 						console.log("题目解析和相关信息：" + analysis);
-						question = question.replace(/(㏎|㎡|㏄).*/g, ""); // 用空字串替換匹配到的部分
+						question = question.replace(/(㏎|㎡|㏄).g, ""); // 用空字串替換匹配到的部分
 						document.getElementById("question").innerHTML = question;
 						
 						// 做form
@@ -284,7 +254,7 @@
 			});
 		}
 	// request Q
-	//$(document).ready(nextQuestion());
+	$(document).ready(nextQuestion());
 	function nextQuestion() {
 		replacePrompt();
 		loading();
@@ -302,6 +272,6 @@
 		}		
 		post_and_show();
 				
-	}
+	}*/
 </script>
 
